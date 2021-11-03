@@ -5,16 +5,16 @@ interface BasicInformation {
     href?: string
 };
 
-export const useBasicInformation: () => BasicInformation[] = () => [
+export const useBasicInformation: (isPrint?: boolean) => BasicInformation[] = (isPrint = false) => [
     {
         key: 0,
         label: "Email",
-        value: "adam at nadamo.me"
+        value: isPrint ? "adam@nadamo.me" : "adam at nadamo.me"
     },
     {
         key: 1,
         label: "LinkedIn",
-        value: "Ádám Németh",
+        value: isPrint ? "https://www.linkedin.com/in/nadamo" : "Ádám Németh",
         href: "https://www.linkedin.com/in/nadamo"
     },
     {

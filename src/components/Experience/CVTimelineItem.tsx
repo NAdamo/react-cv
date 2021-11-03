@@ -4,6 +4,7 @@ import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, Timeline
 import WorkplaceIcon from '@material-ui/icons/Business';
 import RoleIcon from '@material-ui/icons/AssignmentOutlined';
 import DescriptionIcon from '@material-ui/icons/DescriptionOutlined';
+
 import { Job } from './useJobs'
 
 type CVTimelineItemProps = {
@@ -15,6 +16,11 @@ const CVTimelinePaper = withStyles((theme) => ({
         padding: theme.spacing(1),
         [theme.breakpoints.down('sm')]: {
             marginBottom: theme.spacing(3)
+        },
+        '@media print': {
+            boxShadow: 'none',
+            breakInside: 'avoid-page',
+            marginBottom: theme.spacing(1)
         }
     }
 }))(Paper)
@@ -29,6 +35,9 @@ const useStyles = makeStyles((theme) => createStyles({
         [theme.breakpoints.down('sm')]: {
             padding: 0
         }
+    },
+    print: {
+
     }
 
 }))

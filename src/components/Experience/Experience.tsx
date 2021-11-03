@@ -9,7 +9,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     sectionExperience: {
-        marginTop: theme.spacing(2)
+        marginTop: theme.spacing(2),
+        '@media print': {
+            marginTop: 0
+        }
     },
     noPadding: {
         padding: 0

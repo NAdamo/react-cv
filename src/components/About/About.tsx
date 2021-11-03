@@ -1,7 +1,9 @@
 import React, { FunctionComponent } from 'react';
-import { Box, Chip, Card, CardMedia, CardContent, Avatar, Typography, Grid, Table, TableBody, TableRow, TableCell, withStyles, makeStyles, createStyles, Theme, Link, useTheme, useMediaQuery } from '@material-ui/core';
+import { Box, Chip, Card, CardMedia, CardContent, Typography, Grid, Table, TableBody, TableRow, TableCell, withStyles, makeStyles, createStyles, Theme, Link, useTheme, useMediaQuery, Button } from '@material-ui/core';
 import { useSkills } from './useSkills';
 import { useBasicInformation } from './useBasicInformation';
+import { DateTime } from 'luxon';
+import FileDownloadIcon from 'mdi-material-ui/FileDownload';
 
 
 const NoBorderTableCell = withStyles({
@@ -12,7 +14,9 @@ const NoBorderTableCell = withStyles({
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     sectionAbout: {
-
+        '@media print': {
+            boxShadow: 'none'
+        }
     },
     chips: {
         margin: theme.spacing(0.5)
@@ -30,17 +34,22 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        padding: theme.spacing(2),
+        padding: theme.spacing(4),
         fontSize: "4rem",
+        '& > div': {
+            textAlign: "center"
+        },
         [theme.breakpoints.down('sm')]: {
             flexDirection: "column",
+            padding: theme.spacing(2),
             '& h1': {
                 fontSize: "2.5rem",
-                textAlign: "center"
-            },
-            '& h6': {
-                textAlign: "center"
             }
+        }
+    },
+    hideOnPrint: {
+        '@media print': {
+            display: 'none'
         }
     }
 })
@@ -49,24 +58,35 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 export const About: FunctionComponent = () => {
     const classes = useStyles();
-    const basicInformation = useBasicInformation();
-    const skills = useSkills();
     const theme = useTheme();
     const matchesXS = useMediaQuery(theme.breakpoints.only('xs'));
-    const direction = matchesXS ? "column-reverse" : "row";
+    const matchesPrint = useMediaQuery('print');
+    const direction = matchesXS ? (matchesPrint ? "row-reverse" : "column-reverse") : "row";
+
+    const skills = useSkills();
+    const basicInformation = useBasicInformation(matchesPrint);
 
 
     return (<Card component="section" className={classes.sectionAbout}>
         <CardMedia className={classes.header}>
-            <Avatar variant="circular" alt='Németh Ádám' src={'/assets/nadamo.jpeg'} className={classes.bigAvatar}></Avatar>
             <Box>
                 <Typography variant="h1" color="textPrimary">I'm Ádám Németh</Typography>
                 <Typography variant="h6" color="textPrimary">Team lead, Web developer</Typography>
+                <Button
+                    variant="contained"
+                    href="/assets/Adam_Nemeth_20211102.pdf"
+                    download={`Adam_Nemeth_${DateTime.now().toISODate()}.pdf`}
+                    startIcon={<FileDownloadIcon />}
+                    size="large"
+                    className={classes.hideOnPrint}
+                >
+                    Download cv as PDF
+                </Button>
             </Box>
         </CardMedia>
         <CardContent>
             <Grid container spacing={1} direction={direction}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={matchesPrint ? 6 : 12} md={6}>
                     <Typography variant="h4" color="initial">Skills</Typography>
                     <Box component="ul" flexWrap="wrap" display="flex" justifyContent="space-around" padding
 
@@ -81,7 +101,7 @@ export const About: FunctionComponent = () => {
                             />))}
                     </Box>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={matchesPrint ? 6 : 12} md={6}>
                     <Typography variant="h4" color="initial">Basic Information</Typography>
                     <Table size="small">
                         <TableBody>
