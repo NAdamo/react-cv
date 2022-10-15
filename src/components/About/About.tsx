@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useMemo } from 'react';
 import { Box, Chip, Card, CardMedia, CardContent, Typography, Grid, Table, TableBody, TableRow, TableCell, withStyles, makeStyles, createStyles, Theme, Link, useTheme, useMediaQuery, Button } from '@material-ui/core';
 import { useSkills } from './useSkills';
 import { useBasicInformation } from './useBasicInformation';
@@ -8,7 +8,8 @@ import FileDownloadIcon from 'mdi-material-ui/FileDownload';
 
 const NoBorderTableCell = withStyles({
     root: {
-        borderBottom: "none"
+        borderBottom: "none",
+        paddingLeft: "0px"
     }
 })(TableCell);
 
@@ -19,7 +20,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
         }
     },
     chips: {
-        margin: theme.spacing(0.5)
+        marginTop: theme.spacing(0.5),
+        marginBottom: theme.spacing(0.5),
+        '@media print': {
+            marginTop: 0
+        }
     },
     bigAvatar: {
         width: theme.spacing(40),
@@ -51,6 +56,14 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
         '@media print': {
             display: 'none'
         }
+    },
+    noPaddingOnPrint: {
+        '@media print': {
+            '&:last-child': {
+                paddingBottom: theme.spacing(1)
+            },
+            padding: 0
+        }
     }
 })
 );
@@ -61,20 +74,22 @@ export const About: FunctionComponent = () => {
     const theme = useTheme();
     const matchesXS = useMediaQuery(theme.breakpoints.only('xs'));
     const matchesPrint = useMediaQuery('print');
-    const direction = matchesXS ? (matchesPrint ? "row-reverse" : "column-reverse") : "row";
+    const direction = useMemo(() => {
+        return matchesXS ? (matchesPrint ? "row-reverse" : "column-reverse") : "row"
+    }, [matchesXS, matchesPrint]);
 
-    const skills = useSkills();
+    const skills = useSkills(matchesPrint);
     const basicInformation = useBasicInformation(matchesPrint);
 
 
-    return (<Card component="section" className={classes.sectionAbout}>
+    return (<Card component="section" className={`${classes.sectionAbout} ${classes.noPaddingOnPrint}`}>
         <CardMedia className={classes.header}>
             <Box>
                 <Typography variant="h1" color="textPrimary">I'm Ádám Németh</Typography>
                 <Typography variant="h6" color="textPrimary">Team lead, Web developer</Typography>
                 <Button
                     variant="contained"
-                    href="/assets/Adam_Nemeth_20211102.pdf"
+                    href="/assets/Adam_Nemeth_20221015.pdf"
                     download={`Adam_Nemeth_${DateTime.now().toISODate()}.pdf`}
                     startIcon={<FileDownloadIcon />}
                     size="large"
@@ -84,13 +99,11 @@ export const About: FunctionComponent = () => {
                 </Button>
             </Box>
         </CardMedia>
-        <CardContent>
+        <CardContent className={`${classes.noPaddingOnPrint}`}>
             <Grid container spacing={1} direction={direction}>
                 <Grid item xs={matchesPrint ? 6 : 12} md={6}>
                     <Typography variant="h4" color="initial">Skills</Typography>
-                    <Box component="ul" flexWrap="wrap" display="flex" justifyContent="space-around" padding
-
-                        ="0">
+                    <Box component="ul" flexWrap="wrap" display="flex" justifyContent="space-around" padding="0">
                         {skills.map((skill) => (
                             <Chip
                                 label={skill.label}

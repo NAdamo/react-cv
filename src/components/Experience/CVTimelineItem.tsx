@@ -35,9 +35,6 @@ const useStyles = makeStyles((theme) => createStyles({
         [theme.breakpoints.down('sm')]: {
             padding: 0
         }
-    },
-    print: {
-
     }
 
 }))
@@ -45,7 +42,7 @@ const useStyles = makeStyles((theme) => createStyles({
 export const CVTimelineItem: FunctionComponent<CVTimelineItemProps> = ({ job }) => {
     const classes = useStyles();
     return (
-        <TimelineItem >
+        <TimelineItem>
             <TimelineOppositeContent className={classes.hiddenXS}>
                 <Typography variant="body2" color="textSecondary">{job.date}</Typography>
             </TimelineOppositeContent>

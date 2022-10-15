@@ -7,7 +7,15 @@ export type Job = {
 
 export const useJobs: () => Job[] = () => [
     {
-        date: "2018 Sept - Present",
+        date: "2022 Jan - present",
+        role: "(Frontend) Team Lead",
+        workplace: "Webshippy Kft",
+        description: `I am a team lead of a scrum team. My main responsibilty is to help the team to deliver on time.
+        I take part in their technical planning, code review and deploy process. I hold regular one-to-one meetings with my team members.
+        I also work together with the CIO and the CTO to implement strategic technical and organisational reforms within the company.`
+    },
+    {
+        date: "2018 Sept - 2021 Nov",
         role: "(Frontend) Team Lead",
         workplace: "DPC Consulting Kft",
         description: `I was the lead developer and the scrum master of 5-10 developers, while we worked on various Thai webshops.
