@@ -89,7 +89,7 @@ export const About: FunctionComponent = () => {
                 <Typography variant="h6" color="textPrimary">Team lead, Web developer</Typography>
                 <Button
                     variant="contained"
-                    href="/assets/Adam_Nemeth_20221015.pdf"
+                    href="/assets/Adam_Nemeth_20230604.pdf"
                     download={`Adam_Nemeth_${DateTime.now().toISODate()}.pdf`}
                     startIcon={<FileDownloadIcon />}
                     size="large"
