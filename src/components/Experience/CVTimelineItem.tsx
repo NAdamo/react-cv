@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
-import { Typography, Paper, Grid, withStyles, makeStyles, createStyles } from "@material-ui/core";
-import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineOppositeContent, TimelineSeparator } from "@material-ui/lab";
-import WorkplaceIcon from '@material-ui/icons/Business';
-import RoleIcon from '@material-ui/icons/AssignmentOutlined';
-import DescriptionIcon from '@material-ui/icons/DescriptionOutlined';
+import { Typography, Paper, Grid, useMediaQuery, useTheme } from "@mui/material";
+import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineOppositeContent, TimelineSeparator } from "@mui/lab";
+import WorkplaceIcon from '@mui/icons-material/Business';
+import RoleIcon from '@mui/icons-material/AssignmentOutlined';
+import DescriptionIcon from '@mui/icons-material/DescriptionOutlined';
 
 import { Job } from './useJobs'
 
@@ -11,51 +11,35 @@ type CVTimelineItemProps = {
     job: Job
 }
 
-const CVTimelinePaper = withStyles((theme) => ({
-    root: {
-        padding: theme.spacing(1),
-        [theme.breakpoints.down('sm')]: {
-            marginBottom: theme.spacing(3)
-        },
-        '@media print': {
-            boxShadow: 'none',
-            breakInside: 'avoid-page',
-            marginBottom: theme.spacing(1)
-        }
-    }
-}))(Paper)
-
-const useStyles = makeStyles((theme) => createStyles({
-    hiddenXS: {
-        [theme.breakpoints.down('sm')]: {
-            display: 'none'
-        }
-    },
-    noPaddingXS: {
-        [theme.breakpoints.down('sm')]: {
-            padding: 0
-        }
-    }
-
-}))
-
 export const CVTimelineItem: FunctionComponent<CVTimelineItemProps> = ({ job }) => {
-    const classes = useStyles();
+    const theme = useTheme();
+    const matchesXS = useMediaQuery(theme.breakpoints.only('xs'));
+    const matchesPrint = useMediaQuery('print');
+    const shouldDisplay = matchesXS || matchesPrint;
     return (
-        <TimelineItem>
-            <TimelineOppositeContent className={classes.hiddenXS}>
+        <TimelineItem sx={{ display: { xs: 'block', sm: 'flex', '@media print': { display: 'block', padding: 0 } } }}>
+            {shouldDisplay ? null : <TimelineOppositeContent>
                 <Typography variant="body2" color="textSecondary">{job.date}</Typography>
-            </TimelineOppositeContent>
-            <TimelineSeparator className={classes.hiddenXS}>
+            </TimelineOppositeContent>}
+            {shouldDisplay ? null : <TimelineSeparator  >
                 <TimelineDot />
                 <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent className={classes.noPaddingXS}>
-                <CVTimelinePaper>
+            </TimelineSeparator>}
+            <TimelineContent sx={{ '@media print': { padding: 0 } }}>
+                <Paper sx={{
+                    p: 1,
+                    mb: { xs: 3, sm: 0 },
+                    '@media print': {
+                        boxShadow: 'none',
+                        breakInside: 'avoid-page',
+                        marginBottom: theme.spacing(1),
+                        padding: 0
+                    },
+                }}>
                     <Grid container alignItems="center" spacing={2}>
-                        <Grid item className={classes.hiddenXS}>
+                        {shouldDisplay ? null : <Grid item>
                             <RoleIcon />
-                        </Grid>
+                        </Grid>}
                         <Grid item>
                             <Typography variant="h5" color="textPrimary">
                                 {job.role}
@@ -63,33 +47,33 @@ export const CVTimelineItem: FunctionComponent<CVTimelineItemProps> = ({ job }) 
                         </Grid>
                     </Grid>
                     <Grid container alignItems="center" spacing={2}>
-                        <Grid item className={classes.hiddenXS}>
+                        {shouldDisplay ? null : <Grid item>
                             <WorkplaceIcon />
-                        </Grid>
+                        </Grid>}
                         <Grid item>
                             <Typography variant="h6" color="textPrimary">
                                 {job.workplace}
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid container alignItems="center" spacing={2}>
+                    {shouldDisplay ? <Grid container alignItems="center" spacing={2}>
                         <Grid item>
                             <Typography variant="body2" color="textSecondary">
                                 {job.date}
                             </Typography>
                         </Grid>
-                    </Grid>
+                    </Grid> : null}
                     <Grid container alignItems="flex-start" spacing={2}>
-                        <Grid item className={classes.hiddenXS}>
+                        {shouldDisplay ? null : <Grid item>
                             <DescriptionIcon />
-                        </Grid>
+                        </Grid>}
                         <Grid item xs>
                             <Typography>
                                 {job.description}
                             </Typography>
                         </Grid>
                     </Grid>
-                </CVTimelinePaper>
+                </Paper>
             </TimelineContent>
         </TimelineItem>
     )

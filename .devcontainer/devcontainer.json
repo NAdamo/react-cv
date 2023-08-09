@@ -6,7 +6,7 @@
 		"dockerfile": "Dockerfile",
 		// Update 'VARIANT' to pick a Node version: 12, 14, 16
 		"args": {
-			"VARIANT": "14"
+			"VARIANT": "20"
 		}
 	},
 	// Set *default* container specific settings.json values on container create.
@@ -27,9 +27,9 @@
 		"wakatime.vscode-wakatime"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [
-	//	3000
-	// ],
+	"forwardPorts": [
+		3000
+	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "sudo chown node node_modules; yarn install",
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
