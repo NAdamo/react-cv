@@ -1,4 +1,4 @@
-FROM node AS builder
+FROM --platform=amd64 node AS builder
 WORKDIR /app
 COPY . .
 RUN yarn install && yarn build --production
